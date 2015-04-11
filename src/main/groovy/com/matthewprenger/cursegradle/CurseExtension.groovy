@@ -1,7 +1,5 @@
 package com.matthewprenger.cursegradle
 
-import org.gradle.util.ConfigureUtil
-
 class CurseExtension {
 
     def apiKey
@@ -11,11 +9,11 @@ class CurseExtension {
     /**
      * Define a new CurseForge project for deployment
      *
-     * @param configureClosure The configuration closure
+     * @param configClosure The configuration closure
      */
-    void project(Closure<?> configureClosure) {
+    void project(Closure<?> configClosure) {
         CurseProject curseProject = new CurseProject()
-        ConfigureUtil.configure(configureClosure, curseProject)
+        curseProject.with(configClosure)
         if (curseProject.apiKey == null) {
             curseProject.apiKey = this.apiKey
         }

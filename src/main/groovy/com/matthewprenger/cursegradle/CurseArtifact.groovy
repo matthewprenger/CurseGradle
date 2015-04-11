@@ -3,7 +3,6 @@ package com.matthewprenger.cursegradle
 import com.google.gson.annotations.SerializedName
 import org.gradle.api.Nullable
 import org.gradle.api.Project
-import org.gradle.util.ConfigureUtil
 
 import static com.matthewprenger.cursegradle.Util.check
 
@@ -56,12 +55,12 @@ class CurseArtifact implements Serializable {
     @SerializedName("relations")
     Set<CurseRelation> curseRelations
 
-    void relations(Closure<?> closure) {
+    void relations(Closure<?> configClosure) {
         if (curseRelations == null) {
             curseRelations = new HashSet<>()
         }
         CurseRelation relation = new CurseRelation()
-        ConfigureUtil.configure(closure, relation)
+        relation.with(configClosure)
         curseRelations.add(relation)
     }
 

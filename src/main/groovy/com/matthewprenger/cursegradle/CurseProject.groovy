@@ -1,7 +1,6 @@
 package com.matthewprenger.cursegradle
 
 import org.gradle.api.Nullable
-import org.gradle.util.ConfigureUtil
 
 import static com.matthewprenger.cursegradle.Util.check
 
@@ -65,7 +64,7 @@ class CurseProject {
     void mainArtifact(def artifact, Closure<?> configClosure = null) {
         CurseArtifact curseArtifact = new CurseArtifact()
         if (configClosure != null) {
-            ConfigureUtil.configure(configClosure, curseArtifact)
+            curseArtifact.with(configClosure)
         }
         curseArtifact.artifact = artifact
         mainArtifact = curseArtifact
@@ -75,12 +74,12 @@ class CurseProject {
      * Add an additional artifact to this project
      *
      * @param artifact The artifact
-     * @param closure Optional configuration closure
+     * @param configClosure Optional configuration closure
      */
-    void addArtifact(def artifact, Closure<?> closure = null) {
+    void addArtifact(def artifact, Closure<?> configClosure = null) {
         CurseArtifact curseArtifact = new CurseArtifact()
-        if (closure != null) {
-            ConfigureUtil.configure(closure, curseArtifact)
+        if (configClosure != null) {
+            curseArtifact.with(configClosure)
         }
         curseArtifact.artifact = artifact
         additionalArtifacts.add(curseArtifact)
