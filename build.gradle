@@ -10,7 +10,7 @@ ext {
 }
 
 version = '1.0-SNAPSHOT'
-group = 'com.matthewprenger.cursegradle'
+group = 'com.matthewprenger'
 description = 'Gradle plugin to upload artifacts to CurseForge'
 archivesBaseName = 'CurseGradle'
 
