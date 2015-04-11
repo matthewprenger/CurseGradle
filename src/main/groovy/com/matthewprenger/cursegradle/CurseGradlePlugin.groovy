@@ -31,15 +31,25 @@ class CurseGradlePlugin implements Plugin<Project> {
 
         extension = project.extensions.create(EXTENSION_NAME, CurseExtension)
 
-
         project.afterEvaluate {
             extension.curseProjects.each { curseProject ->
                 curseProject.copyConfig()
-                curseProject.validate()
 
-                CurseUploadTask uploadTask = createTask(curseProject)
+                CurseUploadTask uploadTask = project.tasks.create("curseforge$curseProject.id", CurseUploadTask)
                 curseProject.uploadTask = uploadTask
+                uploadTask.group = TASK_GROUP
+                uploadTask.description = "Uploads CurseForge project $curseProject.id"
+                uploadTask.additionalArtifacts = curseProject.additionalArtifacts
+                uploadTask.apiKey = curseProject.apiKey
+                uploadTask.projectId = curseProject.id
+
+                Integration.checkForgeGradle(project, curseProject)
+                Integration.checkJava(project, curseProject)
+
+                uploadTask.mainArtifact = curseProject.mainArtifact
                 mainTask.dependsOn uploadTask
+
+                curseProject.validate()
 
                 curseProject.additionalArtifacts.each { artifact ->
                     if (artifact.artifact instanceof AbstractArchiveTask) {
@@ -49,19 +59,7 @@ class CurseGradlePlugin implements Plugin<Project> {
                 }
             }
 
-            Integration.checkJava(this)
-            Integration.checkForgeGradle(this)
-        }
-    }
 
-    CurseUploadTask createTask(CurseProject curseProject) {
-        CurseUploadTask task = project.tasks.create("curseforge$curseProject.id", CurseUploadTask)
-        task.group = TASK_GROUP
-        task.description = "Uploads CurseForge project $curseProject.id"
-        task.mainArtifact = curseProject.mainArtifact
-        task.additionalArtifacts = curseProject.additionalArtifacts
-        task.apiKey = curseProject.apiKey
-        task.projectId = curseProject.id
-        return task
+        }
     }
 }

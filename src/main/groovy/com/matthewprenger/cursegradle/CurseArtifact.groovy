@@ -80,9 +80,11 @@ class CurseArtifact implements Serializable {
      */
     void resolve(Project project) {
         changelog = Util.resolveString(changelog)
-        displayName = Util.resolveString(displayName)
         releaseType = Util.resolveString(releaseType)
         artifact = Util.resolveFile(project, artifact)
+        if (displayName != null) {
+            displayName = Util.resolveString(displayName)
+        }
     }
 
     @Override
