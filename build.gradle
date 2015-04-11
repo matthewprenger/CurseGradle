@@ -1,10 +1,21 @@
-apply plugin: 'groovy'
-apply plugin: 'idea'
+plugins {
+    id 'groovy'
+    id 'idea'
+    id 'maven-publish'
+}
+
+ext {
+    inceptionYear = '2015'
+    url = 'https://github.com/matthewprenger/CurseGradle'
+}
+
+version = '1.0-SNAPSHOT'
+group = 'com.matthewprenger.cursegradle'
+description = 'Gradle plugin to upload artifacts to CurseForge'
+archivesBaseName = 'CurseGradle'
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
-
-version = '1.0-SNAPSHOT'
 
 repositories {
     jcenter()
@@ -23,7 +34,25 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
 
-jar.manifest {
-    attributes 'Implementation-Version': project.version
+jar.manifest.mainAttributes([
+        'Implementation-Title'  : project.name,
+        'Implementation-Version': project.version
+])
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    from javadoc.destinationDir
+    classifier = 'javadoc'
 }
 
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+assemble.dependsOn javadocJar, sourcesJar
+
+[compileJava, compileGroovy].each {
+    it.options.encoding = 'UTF-8'
+    it.options.deprecation = true
+    it.options.fork = true
+}
