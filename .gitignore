@@ -1,0 +1,19 @@
+#General
+/repo
+/.gradle
+/build
+
+#Eclipse
+.settings
+.metadata
+.classpath
+.project
+/bin
+
+#IntelliJ Idea
+/out
+/.idea
+*.iml
+*.iws
+*.ipr
+s101plugin.state
