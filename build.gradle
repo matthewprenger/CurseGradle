@@ -1,14 +1,14 @@
 plugins {
     id 'groovy'
     id 'idea'
-    id 'maven-publish'
+    id 'signing'
+    id 'maven'
     id 'com.gradle.plugin-publish' version '0.9.0'
 }
 
 ext {
     inceptionYear = '2015'
     url = 'https://github.com/matthewprenger/CurseGradle'
-    git = 'https://github.com/matthewprenger/CurseGradle.git'
 }
 
 version = '1.0.1-SNAPSHOT'
@@ -51,6 +51,12 @@ task sourcesJar(type: Jar) {
     classifier = 'sources'
 }
 
+artifacts {
+    archives jar
+    archives javadocJar
+    archives sourcesJar
+}
+
 assemble.dependsOn javadocJar, sourcesJar
 
 [compileJava, compileGroovy].each {
@@ -59,9 +65,79 @@ assemble.dependsOn javadocJar, sourcesJar
     it.options.fork = true
 }
 
+signing {
+    sign configurations.archives
+}
+
+uploadArchives {
+    dependsOn build
+    repositories {
+        mavenDeployer {
+
+            if (project.hasProperty('ossUsername')) {
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+                repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2') {
+                    authenticaction(userName: ossUsername, password: ossPassword)
+                }
+
+                snapshotRepository(url: 'https://oss.sonatype.org/content/repositories/snapshots') {
+                    authentication(userName: ossUsername, password: ossPassword)
+                }
+            } else {
+                tasks.signArchives.enabled = false
+                repository(url: "file://localhost/${project.file('repo').getAbsolutePath()}")
+            }
+
+            pom {
+                groupId = project.group
+                version = project.version
+                artifactId = project.archivesBaseName
+            }
+
+            pom.project {
+                name project.name
+                description project.description
+                packaging 'jar'
+                url project.url
+                inceptionYear project.inceptionYear
+
+                scm {
+                    url 'git@github.com:matthewprenger/CurseGradle.git'
+                    connection 'scm:git:git@github.com:matthewprenger/CurseGradle.git'
+                    developerConnection 'scm:git:git@github.com:matthewprenger/CurseGradle.git'
+                }
+
+                issueManagement {
+                    system 'github'
+                    url 'https://github.com/matthewprenger/CurseGradle/issues'
+                }
+
+                licenses {
+                    license {
+                        name 'The MIT License'
+                        url 'http://opensource.org/licenses/MIT'
+                        distribution 'repo'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'matthewprenger'
+                        name 'Matthew Prenger'
+                        roles {
+                            role 'developer'
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 pluginBundle {
     website = project.url
-    vcsUrl = project.git
+    vcsUrl = 'git://github.com/matthewprenger/CurseGradle.git'
     plugins {
         curseGradlePlugin {
             id = 'com.matthewprenger.cursegradle'
@@ -73,6 +149,9 @@ pluginBundle {
     }
 }
 
-if (!version.endsWith('-SNAPSHOT')) {
-    tasks.publish.dependsOn publishPlugins
+task release {
+    dependsOn uploadArchives
+    if (!project.version.endsWith('-SNAPSHOT')) {
+        dependsOn publishPlugins
+    }
 }
