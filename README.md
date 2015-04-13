@@ -23,7 +23,7 @@ buildscript {
 }
 
 plugins {
-  id 'com.matthewprenger.curseforge' version '1.0.0'
+  id 'com.matthewprenger.cursegradle' version '1.0.0'
 }
 
 apply plugin: 'forge'
