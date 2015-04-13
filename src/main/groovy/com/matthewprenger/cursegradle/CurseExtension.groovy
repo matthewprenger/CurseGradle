@@ -5,7 +5,7 @@ class CurseExtension {
     /**
      * Optional global apiKey. Will be applied to all projects that don't declare one
      */
-    def apiKey
+    def apiKey = '' // Initialize to empty string to delay error until the task is actually ran
 
     final Collection<CurseProject> curseProjects = new ArrayList<>()
 

@@ -32,6 +32,11 @@ class CurseUploadTask extends DefaultTask {
 
     @TaskAction
     run() {
+
+        if (''.equals(apiKey)) {
+            throw new RuntimeException("Project $projectId apiKey was not set")
+        }
+
         mainArtifact.resolve(project)
 
         CurseVersions.initialize(apiKey)
