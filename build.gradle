@@ -2,14 +2,16 @@ plugins {
     id 'groovy'
     id 'idea'
     id 'maven-publish'
+    id 'com.gradle.plugin-publish' version '0.9.0'
 }
 
 ext {
     inceptionYear = '2015'
     url = 'https://github.com/matthewprenger/CurseGradle'
+    git = 'https://github.com/matthewprenger/CurseGradle.git'
 }
 
-version = '1.0-SNAPSHOT'
+version = '1.0.0'
 group = 'com.matthewprenger'
 description = 'Gradle plugin to upload artifacts to CurseForge'
 archivesBaseName = 'CurseGradle'
@@ -55,4 +57,22 @@ assemble.dependsOn javadocJar, sourcesJar
     it.options.encoding = 'UTF-8'
     it.options.deprecation = true
     it.options.fork = true
+}
+
+pluginBundle {
+    website = project.url
+    vcsUrl = project.git
+    plugins {
+        curseGradlePlugin {
+            id = 'com.matthewprenger.cursegradle'
+            description = project.description
+            displayName = 'CurseGradle'
+            version = project.version
+            tags = ['curseforge', 'publish', 'minecraft']
+        }
+    }
+}
+
+if (!version.endsWith('-SNAPSHOT')) {
+    tasks.publish.dependsOn publishPlugins
 }
