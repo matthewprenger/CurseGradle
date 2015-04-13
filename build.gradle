@@ -11,7 +11,7 @@ ext {
     git = 'https://github.com/matthewprenger/CurseGradle.git'
 }
 
-version = '1.0.0'
+version = '1.0.0-SNAPSHOT'
 group = 'com.matthewprenger'
 description = 'Gradle plugin to upload artifacts to CurseForge'
 archivesBaseName = 'CurseGradle'
