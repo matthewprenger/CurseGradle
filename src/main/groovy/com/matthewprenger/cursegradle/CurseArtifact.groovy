@@ -53,15 +53,12 @@ class CurseArtifact implements Serializable {
     Integer parentFileID
 
     @SerializedName("relations")
-    Set<CurseRelation> curseRelations
+    CurseRelation curseRelations
 
     void relations(Closure<?> configClosure) {
-        if (curseRelations == null) {
-            curseRelations = new HashSet<>()
-        }
         CurseRelation relation = new CurseRelation()
         relation.with(configClosure)
-        curseRelations.add(relation)
+        curseRelations = relation
     }
 
     /**
