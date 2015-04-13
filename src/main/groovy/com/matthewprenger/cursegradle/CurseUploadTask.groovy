@@ -49,6 +49,12 @@ class CurseUploadTask extends DefaultTask {
     }
 
     int uploadFile(String json, File file) throws IOException, URISyntaxException {
+
+        if (project.extensions.getByName(CurseGradlePlugin.EXTENSION_NAME).debug) {
+            logger.lifecycle("DEBUG: File: $file  Json: $json")
+            return 0
+        }
+
         int fileID
         final String uploadUrl = String.format(CurseGradlePlugin.UPLOAD_URL, projectId)
         log.info("Uploading file: {} to url: {} with json: {}", file, uploadUrl, json)

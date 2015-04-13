@@ -9,6 +9,8 @@ class CurseExtension {
 
     final Collection<CurseProject> curseProjects = new ArrayList<>()
 
+    boolean debug = false
+
     /**
      * Define a new CurseForge project for deployment
      *

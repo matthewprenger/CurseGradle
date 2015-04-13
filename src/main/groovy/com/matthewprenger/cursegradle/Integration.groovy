@@ -42,6 +42,8 @@ class Integration {
             }
 
             curseProject.uploadTask.dependsOn reobfTask
+
+            curseProject.addGameVersion(project.extensions.minecraft.version)
         }
     }
 }
