@@ -14,23 +14,13 @@ If you're using ForgeGradle, which you probably are, the following script is a b
 To find out which versions are available, check [HERE](https://plugins.gradle.org/plugin/com.matthewprenger.cursegradle).
 
 ```gradle
-buildscript {
-    repositories {
-        mavenCentral()
-        maven { url = "http://files.minecraftforge.net/maven" }
-        maven { url = "https://oss.sonatype.org/content/repositories/snapshots/" }
-    }
-    dependencies { classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT' }
-}
-
 plugins {
-  id 'com.matthewprenger.cursegradle' version '<VERSION>'
+    id 'net.minecraftforge.gradle.forge' version '2.0.1'
+    id 'com.matthewprenger.cursegradle' version '<VERSION>'
 }
-
-apply plugin: 'forge'
 
 curseforge {
-  apiKey = '123-456'
+  apiKey = '123-456' // This should really be in a gradle.properties file
   project {
     id = '12345'
     changelog = 'Changes' // A file can also be set using: changelog = file('changelog.txt')
