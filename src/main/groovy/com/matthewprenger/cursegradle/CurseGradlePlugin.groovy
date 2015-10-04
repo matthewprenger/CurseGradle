@@ -48,6 +48,7 @@ class CurseGradlePlugin implements Plugin<Project> {
 
                 uploadTask.mainArtifact = curseProject.mainArtifact
                 mainTask.dependsOn uploadTask
+                uploadTask.onlyIf { mainTask.enabled }
 
                 curseProject.validate()
 
