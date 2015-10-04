@@ -20,6 +20,12 @@ class CurseArtifact implements Serializable {
     transient Collection<Object> gameVersionStrings
 
     /**
+     * The type of changelog. At the time of writing this is: html and text
+     */
+    @SerializedName("changelogType")
+    def changelogType
+
+    /**
      * The changelog for this artifact. The {@link Object#toString()} method will be called to get the value
      */
     @SerializedName("changelog")
@@ -66,6 +72,7 @@ class CurseArtifact implements Serializable {
      */
     void validate() {
         check(artifact != null, "artifact not configured")
+        check(changelogType != null, "changelogType was set to null")
         check(changelog != null, "changelog not set")
         check(releaseType != null, "releaseType not set")
         check(CurseGradlePlugin.VALID_RELEASE_TYPES.contains(releaseType), "$releaseType is not a valid release type. Valid options are: $CurseGradlePlugin.VALID_RELEASE_TYPES")
@@ -76,6 +83,7 @@ class CurseArtifact implements Serializable {
      * Resolve metadata into their final values
      */
     void resolve(Project project) {
+        changelogType = Util.resolveString(changelogType)
         changelog = Util.resolveString(changelog)
         releaseType = Util.resolveString(releaseType)
         artifact = Util.resolveFile(project, artifact)
@@ -88,6 +96,7 @@ class CurseArtifact implements Serializable {
     public String toString() {
         return "CurseArtifact{" +
                "artifact=" + artifact +
+               ", changelogType=" + changelogType +
                ", changelog=" + changelog +
                ", displayName=" + displayName +
                ", releaseType='" + releaseType + '\'' +

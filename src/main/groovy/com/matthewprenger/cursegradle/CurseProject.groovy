@@ -41,6 +41,11 @@ class CurseProject {
     def releaseType
 
     /**
+     * The type of changelog. At the time of writing this is: html and text
+     */
+    def changelogType = 'text'
+
+    /**
      * The default changelog for this project's artifacts
      */
     def changelog = ''
@@ -114,11 +119,12 @@ class CurseProject {
             if (artifact.changelog == null && this.changelog != null) {
                 artifact.changelog = this.changelog
             }
-
+            if (artifact.changelogType == null && this.changelogType != null) {
+                artifact.changelogType = this.changelogType
+            }
             if (artifact.releaseType == null && this.releaseType != null) {
                 artifact.releaseType = this.releaseType
             }
-
             if (curseRelations != null) {
                 curseRelations.each {
                     artifact.relations(it)
@@ -129,6 +135,9 @@ class CurseProject {
         if (mainArtifact != null) {
             if (mainArtifact.releaseType == null && this.releaseType != null) {
                 mainArtifact.releaseType = this.releaseType
+            }
+            if (mainArtifact.changelogType == null && this.changelogType != null) {
+                mainArtifact.changelogType = this.changelogType
             }
             if (mainArtifact.changelog == null && this.changelog != null) {
                 mainArtifact.changelog = this.changelog
