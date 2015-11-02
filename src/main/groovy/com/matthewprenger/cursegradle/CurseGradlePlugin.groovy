@@ -33,7 +33,6 @@ class CurseGradlePlugin implements Plugin<Project> {
 
         project.afterEvaluate {
             extension.curseProjects.each { curseProject ->
-                curseProject.copyConfig()
 
                 CurseUploadTask uploadTask = project.tasks.create("curseforge$curseProject.id", CurseUploadTask)
                 curseProject.uploadTask = uploadTask
@@ -43,8 +42,10 @@ class CurseGradlePlugin implements Plugin<Project> {
                 uploadTask.apiKey = curseProject.apiKey
                 uploadTask.projectId = curseProject.id
 
-                Integration.checkForgeGradle(project, curseProject)
                 Integration.checkJava(project, curseProject)
+                Integration.checkForgeGradle(project, curseProject)
+
+                curseProject.copyConfig()
 
                 uploadTask.mainArtifact = curseProject.mainArtifact
                 mainTask.dependsOn uploadTask
@@ -59,8 +60,6 @@ class CurseGradlePlugin implements Plugin<Project> {
                     }
                 }
             }
-
-
         }
     }
 }
