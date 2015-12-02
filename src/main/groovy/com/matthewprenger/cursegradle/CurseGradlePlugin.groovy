@@ -34,6 +34,10 @@ class CurseGradlePlugin implements Plugin<Project> {
         project.afterEvaluate {
             extension.curseProjects.each { curseProject ->
 
+                if (curseProject.id == null || ''.equals(curseProject.id)) {
+                    throw new RuntimeException("A CurseForge project was configured with a null or empty id")
+                }
+
                 CurseUploadTask uploadTask = project.tasks.create("curseforge$curseProject.id", CurseUploadTask)
                 curseProject.uploadTask = uploadTask
                 uploadTask.group = TASK_GROUP
