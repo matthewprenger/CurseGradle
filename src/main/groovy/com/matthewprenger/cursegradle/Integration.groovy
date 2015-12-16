@@ -30,38 +30,21 @@ class Integration {
 
     static void checkForgeGradle(Project project, CurseProject curseProject) {
         try {
-            if (project.plugins.hasPlugin('forge') || project.plugins.hasPlugin('fml')) {
-                log.info 'Adding ForgeGradle integration'
-                Task reobfTask = project.tasks.getByName('reobf')
+            if (project.hasProperty('minecraft')) {
+                log.info "ForgeGradle plugin detected, adding integration..."
+                Task reobfTask = project.tasks.findByName('reobfJar')
+                if (reobfTask == null) reobfTask = project.tasks.findByName('reobf')
                 if (reobfTask == null) {
-                    return
+                    log.error("Couldn't find reobf or reobfJar task.")
+                } else {
+                    curseProject.uploadTask.dependsOn reobfTask
                 }
 
-                curseProject.uploadTask.dependsOn reobfTask
-
-                curseProject.addGameVersion(project.extensions.minecraft.version)
+                curseProject.addGameVersion(project.minecraft.version)
             }
         } catch (Throwable t) {
             log.info('Failed ForgeGradle integration', t)
-            log.warn("Failed ForgeGradle integration")
-        }
-
-        try {
-            if (project.plugins.hasPlugin('net.minecraftforge.gradle.forge')) {
-                log.info 'Adding ForgeGradle2 integration'
-                Task reobfTask = project.tasks.getByName('reobfJar')
-                if (reobfTask == null) {
-                    log.info 'Couldn\'t find reobfJar task'
-                    return;
-                }
-
-                curseProject.uploadTask.dependsOn reobfTask
-                curseProject.addGameVersion(project.extensions.minecraft.version)
-
-            }
-        } catch (Throwable t) {
-            log.info('Failed ForgeGradle2 integration', t)
-            log.warn("Failed ForgeGradle2 integration")
+            log.warn('Failed ForgeGradle integration')
         }
     }
 }
