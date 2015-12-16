@@ -12,23 +12,15 @@ class Integration {
     static void checkJava(Project project, CurseProject curseProject) {
         try {
             if (project.plugins.hasPlugin('java')) {
-                log.info 'Adding Java integration'
-                Task jarTask = project.tasks.getByName('jar')
-                if (jarTask == null) { // Should be impossible
-                    return
+                log.info 'Java plugin detected, adding integration...'
+                if (curseProject.mainArtifact == null) {
+                    Task jarTask = project.tasks.getByName('jar')
+                    log.info "Setting main artifact for CurseForge Project $curseProject.id to the java jar"
+                    CurseArtifact artifact = new CurseArtifact()
+                    artifact.artifact = jarTask
+                    curseProject.mainArtifact = artifact
+                    curseProject.uploadTask.dependsOn jarTask
                 }
-
-                log.info 'Setting main artifact to Java Jar'
-                CurseArtifact artifact = new CurseArtifact()
-                artifact.artifact = jarTask
-                artifact.changelog = curseProject.changelog
-                artifact.releaseType = curseProject.releaseType
-                artifact.gameVersionStrings = curseProject.gameVersionStrings
-                curseProject.curseRelations.each { relation ->
-                    artifact.relations(relation)
-                }
-                curseProject.mainArtifact = artifact
-                curseProject.uploadTask.dependsOn jarTask
             }
         } catch (Throwable t) {
             log.info('Failed Java integration', t)
