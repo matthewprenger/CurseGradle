@@ -1,5 +1,6 @@
 package com.matthewprenger.cursegradle
 
+import com.google.common.base.Strings
 import org.gradle.api.DefaultTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -38,9 +39,7 @@ class CurseGradlePlugin implements Plugin<Project> {
 
             extension.curseProjects.each { curseProject ->
 
-                if (curseProject.id == null || ''.equals(curseProject.id)) {
-                    throw new RuntimeException("A CurseForge project was configured with a null or empty id")
-                }
+                Util.check(!Strings.isNullOrEmpty(curseProject.id), "A CurseForge project was configured without an id")
 
                 CurseUploadTask uploadTask = project.tasks.create("curseforge$curseProject.id", CurseUploadTask)
                 curseProject.uploadTask = uploadTask

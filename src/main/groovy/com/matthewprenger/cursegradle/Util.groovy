@@ -88,9 +88,9 @@ class Util {
                 InputStreamReader reader = new InputStreamReader(response.entity.content)
                 CurseError error = gson.fromJson(reader, CurseError)
                 reader.close()
-                throw new RuntimeException("CurseForge Error: $error.errorCode: $error.errorMessage")
+                throw new RuntimeException("[CurseForge] Error Code ${error.errorCode}: ${error.errorMessage}")
             } else {
-                throw new RuntimeException("Error: $response.statusLine.statusCode: $response.statusLine.reasonPhrase")
+                throw new RuntimeException("[CurseForge] HTTP Error Code $response.statusLine.statusCode: $response.statusLine.reasonPhrase")
             }
         }
     }

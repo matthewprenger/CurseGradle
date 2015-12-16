@@ -1,5 +1,6 @@
 package com.matthewprenger.cursegradle
 
+import com.google.common.base.Strings
 import com.matthewprenger.cursegradle.jsonresponse.CurseError
 import com.matthewprenger.cursegradle.jsonresponse.UploadResponse
 import org.apache.http.HttpResponse
@@ -33,9 +34,7 @@ class CurseUploadTask extends DefaultTask {
     @TaskAction
     run() {
 
-        if (''.equals(apiKey)) {
-            throw new RuntimeException("Project $projectId apiKey was not set")
-        }
+        Util.check(!Strings.isNullOrEmpty(apiKey), "CurseForge Project $projectId does not have an apiKey configured")
 
         mainArtifact.resolve(project)
 
@@ -69,9 +68,9 @@ class CurseUploadTask extends DefaultTask {
 
         post.addHeader('X-Api-Token', apiKey)
         post.setEntity(MultipartEntityBuilder.create()
-                               .addTextBody('metadata', json)
-                               .addBinaryBody('file', file)
-                               .build())
+                .addTextBody('metadata', json)
+                .addBinaryBody('file', file)
+                .build())
 
         HttpResponse response = client.execute(post)
 
@@ -85,9 +84,9 @@ class CurseUploadTask extends DefaultTask {
                 InputStreamReader reader = new InputStreamReader(response.entity.content)
                 CurseError error = Util.gson.fromJson(reader, CurseError)
                 reader.close()
-                throw new RuntimeException("CurseForge Error: $error.errorCode: $error.errorMessage")
+                throw new RuntimeException("[CurseForge ${projectId}] Error Code ${error.errorCode}: ${error.errorMessage}")
             } else {
-                throw new RuntimeException("Error: $response.statusLine.statusCode: $response.statusLine.reasonPhrase")
+                throw new RuntimeException("[CurseForge ${projectId}] HTTP Error Code $response.statusLine.statusCode: $response.statusLine.reasonPhrase")
             }
         }
 

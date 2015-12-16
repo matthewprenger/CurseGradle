@@ -156,10 +156,10 @@ class CurseProject {
      */
     void validate() {
         check(id != null, "Project id not set")
-        check(apiKey != null, "apiKey not set for project: $id")
-        check(mainArtifact != null, "mainArtifact not set for project: $id")
-        check(!gameVersionStrings.isEmpty(), "No Minecraft version configured")
-        mainArtifact.validate()
-        additionalArtifacts.each { artifact -> artifact.validate() }
+        check(apiKey != null, "apiKey not set for project $id")
+        check(mainArtifact != null, "mainArtifact not set for project $id")
+        check(!gameVersionStrings.isEmpty(), "No Minecraft version configured for project $id")
+        mainArtifact.validate(id)
+        additionalArtifacts.each { artifact -> artifact.validate(id) }
     }
 }

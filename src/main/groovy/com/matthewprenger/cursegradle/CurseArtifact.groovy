@@ -70,13 +70,13 @@ class CurseArtifact implements Serializable {
     /**
      * Validate this artifact
      */
-    void validate() {
-        check(artifact != null, "artifact not configured")
-        check(changelogType != null, "changelogType was set to null")
-        check(changelog != null, "changelog not set")
-        check(releaseType != null, "releaseType not set")
-        check(CurseGradlePlugin.VALID_RELEASE_TYPES.contains(releaseType), "$releaseType is not a valid release type. Valid options are: $CurseGradlePlugin.VALID_RELEASE_TYPES")
-        curseRelations.each { it.validate() }
+    void validate(final def id) {
+        check(artifact != null, "Artifact not configured for project $id")
+        check(changelogType != null, "The changelogType was null for project $id")
+        check(changelog != null, "The changelog was not set for project $id")
+        check(releaseType != null, "The releaseType was not set for project $id")
+        check(CurseGradlePlugin.VALID_RELEASE_TYPES.contains(releaseType), "Invalid release type ($releaseType) for project $id. Valid options are: $CurseGradlePlugin.VALID_RELEASE_TYPES")
+        curseRelations.each { it.validate(id) }
     }
 
     /**
@@ -95,12 +95,12 @@ class CurseArtifact implements Serializable {
     @Override
     public String toString() {
         return "CurseArtifact{" +
-               "artifact=" + artifact +
-               ", changelogType=" + changelogType +
-               ", changelog=" + changelog +
-               ", displayName=" + displayName +
-               ", releaseType='" + releaseType + '\'' +
-               ", gameVersionStrings=" + gameVersionStrings +
-               '}';
+                "artifact=" + artifact +
+                ", changelogType=" + changelogType +
+                ", changelog=" + changelog +
+                ", displayName=" + displayName +
+                ", releaseType='" + releaseType + '\'' +
+                ", gameVersionStrings=" + gameVersionStrings +
+                '}';
     }
 }
