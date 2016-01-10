@@ -60,6 +60,10 @@ class CurseGradlePlugin implements Plugin<Project> {
 
                 curseProject.validate()
 
+                if (curseProject.mainArtifact.artifact instanceof AbstractArchiveTask) {
+                    uploadTask.dependsOn curseProject.mainArtifact.artifact
+                }
+
                 curseProject.additionalArtifacts.each { artifact ->
                     if (artifact.artifact instanceof AbstractArchiveTask) {
                         AbstractArchiveTask archiveTask = (AbstractArchiveTask) artifact.artifact
