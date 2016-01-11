@@ -1,9 +1,11 @@
 package com.matthewprenger.cursegradle
 
+import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
+import org.gradle.api.plugins.JavaPluginConvention
 
 class Integration {
 
@@ -21,10 +23,22 @@ class Integration {
                     curseProject.mainArtifact = artifact
                     curseProject.uploadTask.dependsOn jarTask
                 }
+
+                JavaPluginConvention javaConv = (JavaPluginConvention) project.getConvention().getPlugins().get("java");
+                JavaVersion javaVersion = JavaVersion.toVersion(javaConv.targetCompatibility)
+
+                if (JavaVersion.VERSION_1_6.compareTo(javaVersion) >= 0) {
+                    curseProject.addGameVersion('Java 6')
+                }
+                if (JavaVersion.VERSION_1_7.compareTo(javaVersion) >= 0) {
+                    curseProject.addGameVersion('Java 7')
+                }
+                if (JavaVersion.VERSION_1_8.compareTo(javaVersion) >= 0) {
+                    curseProject.addGameVersion('Java 8')
+                }
             }
         } catch (Throwable t) {
-            log.info('Failed Java integration', t)
-            log.warn("Failed Java integration")
+            log.warn("Failed Java integration", t)
         }
     }
 
@@ -43,8 +57,7 @@ class Integration {
                 curseProject.addGameVersion(project.minecraft.version)
             }
         } catch (Throwable t) {
-            log.info('Failed ForgeGradle integration', t)
-            log.warn('Failed ForgeGradle integration')
+            log.warn('Failed ForgeGradle integration', t)
         }
     }
 }
