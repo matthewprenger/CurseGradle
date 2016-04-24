@@ -73,15 +73,15 @@ uploadArchives {
     repositories {
         mavenDeployer {
 
-            if (project.hasProperty('ossUsername')) {
+            if (project.hasProperty('sonatypePassword')) {
                 beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
                 repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2') {
-                    authentication(userName: ossUsername, password: ossPassword)
+                    authentication(userName: 'matthewprenger', password: sonatypePassword)
                 }
 
                 snapshotRepository(url: 'https://oss.sonatype.org/content/repositories/snapshots') {
-                    authentication(userName: ossUsername, password: ossPassword)
+                    authentication(userName: 'matthewprenger', password: sonatypePassword)
                 }
             } else {
                 tasks.signArchives.enabled = false
