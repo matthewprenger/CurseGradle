@@ -16,12 +16,13 @@ class CurseExtension {
      *
      * @param configClosure The configuration closure
      */
-    void project(Closure<?> configClosure) {
+    CurseProject project(Closure<?> configClosure) {
         CurseProject curseProject = new CurseProject()
         curseProject.with(configClosure)
         if (curseProject.apiKey == null) {
             curseProject.apiKey = this.apiKey
         }
         curseProjects.add(curseProject)
+        return curseProject
     }
 }
