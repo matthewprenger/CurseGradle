@@ -49,6 +49,11 @@ class Util {
      */
     static String resolveString(Object obj) {
         checkNotNull(obj)
+
+        while(obj instanceof Closure) {
+            obj = ((Closure)obj).call()
+        }
+
         if (obj instanceof String) {
             return (String) obj
         }

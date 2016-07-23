@@ -75,6 +75,7 @@ class CurseArtifact implements Serializable {
         check(changelogType != null, "The changelogType was null for project $id")
         check(changelog != null, "The changelog was not set for project $id")
         check(releaseType != null, "The releaseType was not set for project $id")
+        releaseType = Util.resolveString(releaseType)
         check(CurseGradlePlugin.VALID_RELEASE_TYPES.contains(releaseType), "Invalid release type ($releaseType) for project $id. Valid options are: $CurseGradlePlugin.VALID_RELEASE_TYPES")
         curseRelations.each { it.validate(id) }
     }
