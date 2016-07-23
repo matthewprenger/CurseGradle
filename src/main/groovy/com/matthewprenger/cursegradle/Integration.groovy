@@ -24,21 +24,29 @@ class Integration {
                     curseProject.uploadTask.dependsOn jarTask
                 }
 
-                JavaPluginConvention javaConv = (JavaPluginConvention) project.getConvention().getPlugins().get("java");
-                JavaVersion javaVersion = JavaVersion.toVersion(javaConv.targetCompatibility)
-
-                if (JavaVersion.VERSION_1_6.compareTo(javaVersion) >= 0) {
-                    curseProject.addGameVersion('Java 6')
-                }
-                if (JavaVersion.VERSION_1_7.compareTo(javaVersion) >= 0) {
-                    curseProject.addGameVersion('Java 7')
-                }
-                if (JavaVersion.VERSION_1_8.compareTo(javaVersion) >= 0) {
-                    curseProject.addGameVersion('Java 8')
-                }
             }
         } catch (Throwable t) {
             log.warn("Failed Java integration", t)
+        }
+    }
+
+    static void checkJavaVersion(Project project, CurseProject curseProject) {
+
+        try {
+            JavaPluginConvention javaConv = (JavaPluginConvention) project.getConvention().getPlugins().get("java");
+            JavaVersion javaVersion = JavaVersion.toVersion(javaConv.targetCompatibility)
+
+            if (JavaVersion.VERSION_1_6.compareTo(javaVersion) >= 0) {
+                curseProject.addGameVersion('Java 6')
+            }
+            if (JavaVersion.VERSION_1_7.compareTo(javaVersion) >= 0) {
+                curseProject.addGameVersion('Java 7')
+            }
+            if (JavaVersion.VERSION_1_8.compareTo(javaVersion) >= 0) {
+                curseProject.addGameVersion('Java 8')
+            }
+        } catch (Throwable t) {
+            log.warn("Failed to check Java Version", t)
         }
     }
 

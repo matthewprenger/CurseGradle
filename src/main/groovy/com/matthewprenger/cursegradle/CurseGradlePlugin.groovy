@@ -49,8 +49,18 @@ class CurseGradlePlugin implements Plugin<Project> {
                 uploadTask.apiKey = curseProject.apiKey
                 uploadTask.projectId = curseProject.id
 
-                Integration.checkJava(project, curseProject)
-                Integration.checkForgeGradle(project, curseProject)
+                CurseExtension ext = project.extensions.getByType(CurseExtension)
+
+                if (ext.curseGradleOptions.javaVersionAutoDetect) {
+                    Integration.checkJavaVersion(project, curseProject)
+                }
+
+                if (ext.curseGradleOptions.javaIntegration) {
+                    Integration.checkJava(project, curseProject)
+                }
+                if (ext.curseGradleOptions.forgeGradleIntegration) {
+                    Integration.checkForgeGradle(project, curseProject)
+                }
 
                 curseProject.copyConfig()
 

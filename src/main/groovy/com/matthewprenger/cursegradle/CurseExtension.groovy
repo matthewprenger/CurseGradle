@@ -9,7 +9,17 @@ class CurseExtension {
 
     final Collection<CurseProject> curseProjects = new ArrayList<>()
 
-    boolean debug = false
+    Options curseGradleOptions = new Options()
+
+    @Deprecated
+    boolean getDebug() {
+        return curseGradleOptions.debug
+    }
+
+    @Deprecated
+    void setDebug(boolean debug) {
+        curseGradleOptions.debug = debug
+    }
 
     /**
      * Define a new CurseForge project for deployment
@@ -23,5 +33,9 @@ class CurseExtension {
             curseProject.apiKey = this.apiKey
         }
         curseProjects.add(curseProject)
+    }
+
+    void options(Closure<?> configClosure) {
+        curseGradleOptions.with(configClosure)
     }
 }
