@@ -1,6 +1,7 @@
 package com.matthewprenger.cursegradle
 
 import com.google.common.base.Throwables
+import com.matthewprenger.cursegradle.jsonresponse.VersionType
 import com.matthewprenger.cursegradle.jsonresponse.GameVersion
 import gnu.trove.map.TObjectIntMap
 import gnu.trove.map.hash.TObjectIntHashMap
@@ -20,18 +21,28 @@ class CurseVersions {
      * @param apiKey The api key to use to connect to CurseForge
      */
     static void initialize(String apiKey) {
-        if (!gameVersions.isEmpty()) {
-            return
-        }
+
+        gameVersions.clear()
 
         log.info 'Initializing CurseForge versions...'
 
         try {
-            String json = Util.httpGet(apiKey, CurseGradlePlugin.VERSION_URL)
+            TIntSet validVersionTypes = new TIntHashSet()
+
+            String versionTypesJson = Util.httpGet(apiKey, CurseGradlePlugin.VERSION_TYPES_URL)
             //noinspection GroovyAssignabilityCheck
-            GameVersion[] versions = Util.gson.fromJson(json, GameVersion[].class)
+            VersionType[] types = Util.gson.fromJson(versionTypesJson, VersionType[].class)
+            types.each { type ->
+                if (type.slug.startsWith('minecraft') || type.slug == 'java') {
+                    validVersionTypes.add(type.id)
+                }
+            }
+
+            String gameVersionsJson = Util.httpGet(apiKey, CurseGradlePlugin.VERSION_URL)
+            //noinspection GroovyAssignabilityCheck
+            GameVersion[] versions = Util.gson.fromJson(gameVersionsJson, GameVersion[].class)
             versions.each { version ->
-                if (version.gameDependencyID == null) {
+                if (validVersionTypes.contains(version.gameVersionTypeID)) {
                     gameVersions.put(version.name, version.id)
                 }
             }

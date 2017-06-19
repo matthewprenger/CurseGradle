@@ -3,7 +3,7 @@ plugins {
     id 'idea'
     id 'signing'
     id 'maven'
-    id 'com.gradle.plugin-publish' version '0.9.4'
+    id 'com.gradle.plugin-publish' version '0.9.7'
 }
 
 ext {
@@ -11,7 +11,7 @@ ext {
     url = 'https://github.com/matthewprenger/CurseGradle'
 }
 
-version = '1.0.8'
+version = '1.0.9'
 //version = '1.0-SNAPSHOT'
 group = 'com.matthewprenger'
 description = 'Gradle plugin to upload artifacts to CurseForge'

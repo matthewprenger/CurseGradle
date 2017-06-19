@@ -1,7 +1,5 @@
 package com.matthewprenger.cursegradle.jsonresponse
 
-import org.gradle.api.Nullable
-
 /**
  * A game version
  */
@@ -13,10 +11,9 @@ class GameVersion {
     int id
 
     /**
-     * Optional game dependency ID. Currently this is only used for Java versions. *shrug*
+     * Game dependency ID
      */
-    @Nullable
-    Integer gameDependencyID
+    int gameVersionTypeID
 
     /**
      * A friendly name
@@ -27,4 +24,15 @@ class GameVersion {
      * The unique slug
      */
     String slug
+
+
+    @Override
+    String toString() {
+        return "GameVersion{" +
+                "id=" + id +
+                ", gameVersionTypeID=" + gameVersionTypeID +
+                ", name='" + name + '\'' +
+                ", slug='" + slug + '\'' +
+                '}'
+    }
 }

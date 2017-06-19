@@ -16,8 +16,10 @@ class CurseGradlePlugin implements Plugin<Project> {
     static final Set<String> VALID_RELEASE_TYPES = ['alpha', 'beta', 'release']
     static final Set<String> VALID_RELATIONS = ['requiredLibrary', 'embeddedLibrary', 'optionalLibrary', 'tool', 'incompatible']
 
-    static final String VERSION_URL = 'https://minecraft.curseforge.com/api/game/versions'
-    static final String UPLOAD_URL = 'https://minecraft.curseforge.com/api/projects/%s/upload-file'
+    static final String API_BASE_URL = 'https://minecraft.curseforge.com'
+    static final String VERSION_TYPES_URL = "$API_BASE_URL/api/game/version-types"
+    static final String VERSION_URL = "$API_BASE_URL/api/game/versions"
+    static final String UPLOAD_URL = "$API_BASE_URL/api/projects/%s/upload-file"
 
     Project project
     CurseExtension extension

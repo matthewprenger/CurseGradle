@@ -3,7 +3,7 @@ package com.matthewprenger.cursegradle.jsonresponse
 /**
  * A dependency
  */
-class GameDependency {
+class VersionType {
 
     /**
      * The unique ID
@@ -19,4 +19,14 @@ class GameDependency {
      * The unique slug
      */
     String slug
+
+
+    @Override
+    String toString() {
+        return "VersionType{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", slug='" + slug + '\'' +
+                '}'
+    }
 }
