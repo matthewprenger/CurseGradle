@@ -6,8 +6,7 @@ cache:
 notifications:
   email: false
 jdk:
-  - oraclejdk7
-  - oraclejdk8
+  - openjdk8
 before_install:
   - chmod a+x gradlew
 script: gradle clean check
