@@ -6,6 +6,8 @@ import com.google.gson.Gson
 import com.matthewprenger.cursegradle.jsonresponse.CurseError
 import org.apache.http.HttpResponse
 import org.apache.http.client.HttpClient
+import org.apache.http.client.config.CookieSpecs
+import org.apache.http.client.config.RequestConfig
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.impl.client.HttpClientBuilder
 import org.gradle.api.Project
@@ -77,7 +79,10 @@ class Util {
     static String httpGet(String apiKey, String url) {
         log.debug "HTTP GET to URL: $url"
 
-        HttpClient client = HttpClientBuilder.create().build()
+        HttpClient client = HttpClientBuilder.create()
+                .setDefaultRequestConfig(RequestConfig.custom()
+                .setCookieSpec(CookieSpecs.IGNORE_COOKIES).build()).build()
+
         HttpGet get = new HttpGet(new URI(url))
         get.setHeader('X-Api-Token', apiKey)
 

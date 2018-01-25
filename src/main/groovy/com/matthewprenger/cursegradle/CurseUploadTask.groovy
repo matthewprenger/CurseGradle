@@ -5,6 +5,8 @@ import com.matthewprenger.cursegradle.jsonresponse.CurseError
 import com.matthewprenger.cursegradle.jsonresponse.UploadResponse
 import org.apache.http.HttpResponse
 import org.apache.http.client.HttpClient
+import org.apache.http.client.config.CookieSpecs
+import org.apache.http.client.config.RequestConfig
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.entity.mime.MultipartEntityBuilder
 import org.apache.http.impl.client.HttpClientBuilder
@@ -63,7 +65,10 @@ class CurseUploadTask extends DefaultTask {
         final String uploadUrl = String.format(CurseGradlePlugin.UPLOAD_URL, projectId)
         log.info("Uploading file: {} to url: {} with json: {}", file, uploadUrl, json)
 
-        HttpClient client = HttpClientBuilder.create().build()
+        HttpClient client = HttpClientBuilder.create()
+                .setDefaultRequestConfig(RequestConfig.custom()
+                .setCookieSpec(CookieSpecs.IGNORE_COOKIES).build()).build()
+
         HttpPost post = new HttpPost(new URI(uploadUrl))
 
         post.addHeader('X-Api-Token', apiKey)
