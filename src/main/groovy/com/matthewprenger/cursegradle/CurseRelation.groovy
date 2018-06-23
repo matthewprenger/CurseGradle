@@ -6,14 +6,24 @@ import static com.matthewprenger.cursegradle.Util.check
 
 class CurseRelation implements Serializable {
 
-    // Create methods for each type of project relation
-    static {
-        CurseGradlePlugin.VALID_RELATIONS.each { relation ->
-            CurseRelation.metaClass."$relation" = { Object[] args ->
-                check(args.length == 1, "Invalid relation syntax for relation $relation")
-                projects.add(new Project(type: relation, slug: args[0]))
-            }
-        }
+    private void addRelation(String typeIn, String slugIn){
+        projects.add(new Project(type: typeIn, slug: slugIn))
+    }
+
+    void requiredLibrary(String slugIn) {
+        addRelation("requiredLibrary", slugIn)
+    }
+    void embeddedLibrary(String slugIn) {
+        addRelation("embeddedLibrary", slugIn)
+    }
+    void optionalLibrary(String slugIn) {
+        addRelation("optionalLibrary", slugIn)
+    }
+    void tool(String slugIn) {
+        addRelation("tool", slugIn)
+    }
+    void incompatible(String slugIn) {
+        addRelation("incompatible", slugIn)
     }
 
     // Catches a missing method exception and gives a more user friendly error message

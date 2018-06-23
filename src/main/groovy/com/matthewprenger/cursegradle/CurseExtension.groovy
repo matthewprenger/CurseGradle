@@ -26,7 +26,7 @@ class CurseExtension {
      *
      * @param configClosure The configuration closure
      */
-    void project(Closure<?> configClosure) {
+    void project(@DelegatesTo(CurseProject) Closure<?> configClosure) {
         CurseProject curseProject = new CurseProject()
         curseProject.with(configClosure)
         if (curseProject.apiKey == null) {
