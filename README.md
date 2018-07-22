@@ -28,20 +28,3 @@ curseforge {
   }
 }
 ```
-
-## Snapshots
-If you want to test the latest and greatest version, you can use the snapshot builds, but **be warned**: they may be unstable! Your buildscript needs the following entries instead of the `plugins { }` block.
-
-```gradle
-buildscript {
-    repositories {
-        jcenter()
-        maven { url = 'https://oss.sonatype.org/content/groups/public' }
-    }
-    dependencies {
-        classpath 'com.matthewprenger:CurseGradle:<VERSION>-SNAPSHOT'
-    }
-}
-
-apply plugin: 'com.matthewprenger.cursegradle'
-```
