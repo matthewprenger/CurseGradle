@@ -10,14 +10,26 @@ class CurseRelation implements Serializable {
         projects.add(new Project(type: typeIn, slug: slugIn))
     }
 
+    @Deprecated
     void requiredLibrary(String slugIn) {
-        addRelation("requiredLibrary", slugIn)
+        addRelation("requiredDependency", slugIn)
     }
+    void requiredDependency(String slugIn) {
+        addRelation("requiredDependency", slugIn)
+    }
+    @Deprecated
     void embeddedLibrary(String slugIn) {
-        addRelation("embeddedLibrary", slugIn)
+        addRelation("embeddedDependency", slugIn)
     }
+    void embeddedDependency(String slugIn) {
+        addRelation("embeddedDependency", slugIn)
+    }
+    @Deprecated
     void optionalLibrary(String slugIn) {
-        addRelation("optionalLibrary", slugIn)
+        addRelation("optionalDependency", slugIn)
+    }
+    void optionalDependency(String slugIn) {
+        addRelation("optionalDependency", slugIn)
     }
     void tool(String slugIn) {
         addRelation("tool", slugIn)
