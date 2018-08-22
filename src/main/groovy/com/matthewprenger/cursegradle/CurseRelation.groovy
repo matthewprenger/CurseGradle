@@ -25,6 +25,9 @@ class CurseRelation implements Serializable {
     void incompatible(String slugIn) {
         addRelation("incompatible", slugIn)
     }
+    void include(String slugIn) {
+        addRelation("include", slugIn)
+    }
 
     // Catches a missing method exception and gives a more user friendly error message
     def methodMissing(String name, def args) {
