@@ -17,12 +17,8 @@ class CurseRelation implements Serializable {
     void requiredDependency(String slugIn) {
         addRelation("requiredDependency", slugIn)
     }
-    @Deprecated
     void embeddedLibrary(String slugIn) {
-        addRelation("embeddedDependency", slugIn)
-    }
-    void embeddedDependency(String slugIn) {
-        addRelation("embeddedDependency", slugIn)
+        addRelation("embeddedLibrary", slugIn)
     }
     @Deprecated
     void optionalLibrary(String slugIn) {
