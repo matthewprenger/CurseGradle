@@ -6,7 +6,7 @@ import static com.matthewprenger.cursegradle.Util.check
 
 class CurseRelation implements Serializable {
 
-    private void addRelation(String typeIn, String slugIn){
+    private void addRelation(String typeIn, String slugIn) {
         projects.add(new Project(type: typeIn, slug: slugIn))
     }
 

@@ -33,7 +33,7 @@ class Integration {
     static void checkJavaVersion(Project project, CurseProject curseProject) {
 
         try {
-            JavaPluginConvention javaConv = (JavaPluginConvention) project.getConvention().getPlugins().get("java");
+            JavaPluginConvention javaConv = (JavaPluginConvention) project.getConvention().getPlugins().get("java")
             JavaVersion javaVersion = JavaVersion.toVersion(javaConv.targetCompatibility)
 
             if (JavaVersion.VERSION_1_6.compareTo(javaVersion) >= 0) {

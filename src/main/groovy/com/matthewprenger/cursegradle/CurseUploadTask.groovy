@@ -20,7 +20,6 @@ class CurseUploadTask extends DefaultTask {
 
     private static final Logger log = Logging.getLogger(CurseUploadTask)
 
-
     @Input
     String apiKey
 
