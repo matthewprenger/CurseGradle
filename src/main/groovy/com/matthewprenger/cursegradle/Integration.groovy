@@ -23,7 +23,6 @@ class Integration {
                     curseProject.mainArtifact = artifact
                     curseProject.uploadTask.dependsOn jarTask
                 }
-
             }
         } catch (Throwable t) {
             log.warn("Failed Java integration", t)
