@@ -25,7 +25,6 @@ class GameVersion {
      */
     String slug
 
-
     @Override
     String toString() {
         return "GameVersion{" +

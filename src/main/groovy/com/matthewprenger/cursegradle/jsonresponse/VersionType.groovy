@@ -20,7 +20,6 @@ class VersionType {
      */
     String slug
 
-
     @Override
     String toString() {
         return "VersionType{" +

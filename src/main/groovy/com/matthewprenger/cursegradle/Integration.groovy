@@ -23,7 +23,6 @@ class Integration {
                     curseProject.mainArtifact = artifact
                     curseProject.uploadTask.dependsOn jarTask
                 }
-
             }
         } catch (Throwable t) {
             log.warn("Failed Java integration", t)
@@ -33,7 +32,7 @@ class Integration {
     static void checkJavaVersion(Project project, CurseProject curseProject) {
 
         try {
-            JavaPluginConvention javaConv = (JavaPluginConvention) project.getConvention().getPlugins().get("java");
+            JavaPluginConvention javaConv = (JavaPluginConvention) project.getConvention().getPlugins().get("java")
             JavaVersion javaVersion = JavaVersion.toVersion(javaConv.targetCompatibility)
 
             if (JavaVersion.VERSION_1_6.compareTo(javaVersion) >= 0) {
@@ -44,6 +43,9 @@ class Integration {
             }
             if (JavaVersion.VERSION_1_8.compareTo(javaVersion) >= 0) {
                 curseProject.addGameVersion('Java 8')
+            }
+            if (JavaVersion.VERSION_1_9.compareTo(javaVersion) >= 0) {
+                curseProject.addGameVersion('Java 9')
             }
         } catch (Throwable t) {
             log.warn("Failed to check Java Version", t)

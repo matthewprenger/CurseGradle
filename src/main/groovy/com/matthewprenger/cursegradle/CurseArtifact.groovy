@@ -102,6 +102,6 @@ class CurseArtifact implements Serializable {
                 ", displayName=" + displayName +
                 ", releaseType='" + releaseType + '\'' +
                 ", gameVersionStrings=" + gameVersionStrings +
-                '}';
+                '}'
     }
 }
