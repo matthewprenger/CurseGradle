@@ -18,11 +18,7 @@ class CurseGradlePlugin implements Plugin<Project> {
 
 	// this is the default if the user has not set the apiUrl project value
     static final String API_BASE_URL = 'https://minecraft.curseforge.com'
-/*
-    static final String VERSION_TYPES_URL = "$API_BASE_URL/api/game/version-types"
-    static final String VERSION_URL = "$API_BASE_URL/api/game/versions"
-    static final String UPLOAD_URL = "$API_BASE_URL/api/projects/%s/upload-file"
-*/
+	// these are the end-point paths that are needed
 	static final String VERSION_TYPES_URL_BASE = '/api/game/version-types'
 	static final String VERSION_URL_BASE = '/api/game/versions'
 	static final String UPLOAD_URL_BASE = '/api/projects/%s/upload-file'

@@ -37,6 +37,7 @@ class CurseUploadTask extends DefaultTask {
 
         Util.check(!Strings.isNullOrEmpty(apiKey), "CurseForge Project $projectId does not have an apiKey configured")
 
+		// Using the "Elvis Operator" here in hopes that it'll catch things if someone tries setting project.ext.apiUrl to nothing
 		Util.resolveApiUrl(project.ext.apiUrl?:CurseGradlePlugin.API_BASE_URL)
         mainArtifact.resolve(project)
 
