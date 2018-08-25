@@ -55,6 +55,11 @@ class CurseProject {
      */
     def apiKey
 
+	/**
+	 * The base of the URL for the upload
+	 */
+	def apiUrl = CurseGradlePlugin.API_BASE_URL
+	
     List<Object> gameVersionStrings = new ArrayList<>()
 
     @Nullable

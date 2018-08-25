@@ -116,4 +116,15 @@ class Util {
             throw new RuntimeException(message)
         }
     }
+	
+	static void resolveApiUrl(String apiUrl) {
+		CurseGradlePlugin.upload_url = "$apiUrl$CurseGradlePlugin.UPLOAD_URL_BASE"
+		CurseGradlePlugin.version_url = "$apiUrl$CurseGradlePlugin.VERSION_URL_BASE"
+		CurseGradlePlugin.version_types_url = "$apiUrl$CurseGradlePlugin.VERSION_TYPES_URL_BASE"
+		println("Upload URL: $CurseGradlePlugin.upload_url")
+		println("Version URL: $CurseGradlePlugin.version_url")
+		println("Version Types URL: $CurseGradlePlugin.version_types_url")
+	}
+	
+
 }

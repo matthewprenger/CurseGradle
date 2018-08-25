@@ -37,6 +37,7 @@ class CurseUploadTask extends DefaultTask {
 
         Util.check(!Strings.isNullOrEmpty(apiKey), "CurseForge Project $projectId does not have an apiKey configured")
 
+		Util.resolveApiUrl(project.ext.apiUrl?:CurseGradlePlugin.API_BASE_URL)
         mainArtifact.resolve(project)
 
         CurseVersions.initialize(apiKey)
@@ -61,7 +62,7 @@ class CurseUploadTask extends DefaultTask {
         }
 
         int fileID
-        final String uploadUrl = String.format(CurseGradlePlugin.UPLOAD_URL, projectId)
+        final String uploadUrl = String.format(CurseGradlePlugin.upload_url, projectId)
         log.info("Uploading file: {} to url: {} with json: {}", file, uploadUrl, json)
 
         HttpClient client = HttpClientBuilder.create()
