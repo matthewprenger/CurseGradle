@@ -1,8 +1,6 @@
 plugins {
     id 'groovy'
     id 'idea'
-    id 'signing'
-    id 'maven'
     id 'com.gradle.plugin-publish' version '0.9.7'
 }
 
@@ -12,7 +10,6 @@ ext {
 }
 
 version = '1.1.0'
-//version = '1.0-SNAPSHOT'
 group = 'com.matthewprenger'
 description = 'Gradle plugin to upload artifacts to CurseForge'
 archivesBaseName = 'CurseGradle'
@@ -64,76 +61,6 @@ assemble.dependsOn javadocJar, sourcesJar
     it.options.fork = true
 }
 
-signing {
-    sign configurations.archives
-}
-
-uploadArchives {
-    dependsOn build
-    repositories {
-        mavenDeployer {
-
-            if (project.hasProperty('sonatypePassword')) {
-                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
-                repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2') {
-                    authentication(userName: 'matthewprenger', password: sonatypePassword)
-                }
-
-                snapshotRepository(url: 'https://oss.sonatype.org/content/repositories/snapshots') {
-                    authentication(userName: 'matthewprenger', password: sonatypePassword)
-                }
-            } else {
-                tasks.signArchives.enabled = false
-                repository(url: "file://localhost/${project.file('repo').getAbsolutePath()}")
-            }
-
-            pom {
-                groupId = project.group
-                version = project.version
-                artifactId = project.archivesBaseName
-            }
-
-            pom.project {
-                name project.name
-                description project.description
-                packaging 'jar'
-                url project.url
-                inceptionYear project.inceptionYear
-
-                scm {
-                    url 'git@github.com:matthewprenger/CurseGradle.git'
-                    connection 'scm:git:git@github.com:matthewprenger/CurseGradle.git'
-                    developerConnection 'scm:git:git@github.com:matthewprenger/CurseGradle.git'
-                }
-
-                issueManagement {
-                    system 'github'
-                    url 'https://github.com/matthewprenger/CurseGradle/issues'
-                }
-
-                licenses {
-                    license {
-                        name 'The MIT License'
-                        url 'http://opensource.org/licenses/MIT'
-                        distribution 'repo'
-                    }
-                }
-
-                developers {
-                    developer {
-                        id 'matthewprenger'
-                        name 'Matthew Prenger'
-                        roles {
-                            role 'developer'
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
 pluginBundle {
     website = project.url
     vcsUrl = 'git://github.com/matthewprenger/CurseGradle.git'
@@ -145,12 +72,5 @@ pluginBundle {
             version = project.version
             tags = ['curseforge', 'publish', 'minecraft']
         }
-    }
-}
-
-task release {
-    dependsOn uploadArchives
-    if (!project.version.endsWith('-SNAPSHOT')) {
-        dependsOn publishPlugins
     }
 }
