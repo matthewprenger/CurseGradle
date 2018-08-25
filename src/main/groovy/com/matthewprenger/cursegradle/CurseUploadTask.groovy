@@ -73,7 +73,7 @@ class CurseUploadTask extends DefaultTask {
 
         post.addHeader('X-Api-Token', apiKey)
         post.setEntity(MultipartEntityBuilder.create()
-                .addTextBody('metadata', json)
+                .addTextBody('metadata', json, ContentType.APPLICATION_JSON)
                 .addBinaryBody('file', file)
                 .build())
 
