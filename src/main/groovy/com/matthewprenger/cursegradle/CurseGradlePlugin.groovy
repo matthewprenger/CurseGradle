@@ -39,7 +39,6 @@ class CurseGradlePlugin implements Plugin<Project> {
         mainTask.group = TASK_GROUP
 
         extension = project.extensions.create(EXTENSION_NAME, CurseExtension)
-		project.ext.apiUrl = API_BASE_URL
 		
         project.afterEvaluate {
             if (project.state.failure != null) {
@@ -57,7 +56,8 @@ class CurseGradlePlugin implements Plugin<Project> {
                 uploadTask.additionalArtifacts = curseProject.additionalArtifacts
                 uploadTask.apiKey = curseProject.apiKey
                 uploadTask.projectId = curseProject.id
-				
+				uploadTask.apiUrl = curseProject.apiUrl?:CurseGradlePlugin.API_BASE_URL
+				 
                 CurseExtension ext = project.extensions.getByType(CurseExtension)
 
                 if (ext.curseGradleOptions.javaVersionAutoDetect) {

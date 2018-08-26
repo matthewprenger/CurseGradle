@@ -7,6 +7,11 @@ class CurseExtension {
      */
     def apiKey = '' // Initialize to empty string to delay error until the task is actually ran
 
+	/**
+	 * The base of the URL for the upload
+	 */
+	def apiUrl = CurseGradlePlugin.API_BASE_URL
+
     final Collection<CurseProject> curseProjects = new ArrayList<>()
 
     Options curseGradleOptions = new Options()
@@ -32,6 +37,11 @@ class CurseExtension {
         if (curseProject.apiKey == null) {
             curseProject.apiKey = this.apiKey
         }
+		
+		if (curseProject.apiUrl == null) {
+			curseProject.apiUrl = this.apiUrl
+		}
+		
         curseProjects.add(curseProject)
     }
 
