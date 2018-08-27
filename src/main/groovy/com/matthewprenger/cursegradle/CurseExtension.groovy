@@ -10,7 +10,7 @@ class CurseExtension {
 	/**
 	 * The base of the URL for the upload
 	 */
-	def apiUrl = CurseGradlePlugin.API_BASE_URL
+    def apiUrl = CurseGradlePlugin.API_BASE_URL
 
     final Collection<CurseProject> curseProjects = new ArrayList<>()
 
@@ -37,11 +37,11 @@ class CurseExtension {
         if (curseProject.apiKey == null) {
             curseProject.apiKey = this.apiKey
         }
-		
-		if (curseProject.apiUrl == null) {
-			curseProject.apiUrl = this.apiUrl
-		}
-		
+
+        if (curseProject.apiUrl == null) {
+            curseProject.apiUrl = this.apiUrl
+        }
+
         curseProjects.add(curseProject)
     }
 

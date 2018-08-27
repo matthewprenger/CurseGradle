@@ -117,11 +117,9 @@ class Util {
         }
     }
 	
-	static void resolveApiUrl(String apiUrl) {
-		CurseGradlePlugin.upload_url = "$apiUrl$CurseGradlePlugin.UPLOAD_URL_BASE"
-		CurseGradlePlugin.version_url = "$apiUrl$CurseGradlePlugin.VERSION_URL_BASE"
-		CurseGradlePlugin.version_types_url = "$apiUrl$CurseGradlePlugin.VERSION_TYPES_URL_BASE"
-	}
-	
-
+    static void resolveApiUrl(String apiUrl) {
+        CurseGradlePlugin.upload_url = "$apiUrl$CurseGradlePlugin.UPLOAD_URL_BASE"
+        CurseGradlePlugin.version_url = "$apiUrl$CurseGradlePlugin.VERSION_URL_BASE"
+        CurseGradlePlugin.version_types_url = "$apiUrl$CurseGradlePlugin.VERSION_TYPES_URL_BASE"
+    }
 }
