@@ -60,10 +60,13 @@ class Util {
             return (String) obj
         }
         if (obj instanceof File) {
-            return Files.toString((File) obj, Charsets.UTF_8)
+            String data = new String(((File) obj).getText('UTF-8').getBytes('UTF-8'))
+            return data;
         }
+
         if (obj instanceof AbstractArchiveTask) {
-            return Files.toString(((AbstractArchiveTask) obj).archivePath, Charsets.UTF_8)
+            String data = new String(((File) ((AbstractArchiveTask) obj).archivePath).getText('UTF-8').getBytes('UTF-8'))
+            return data;
         }
 
         return obj.toString()
