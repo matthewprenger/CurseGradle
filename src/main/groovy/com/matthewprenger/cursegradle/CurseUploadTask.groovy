@@ -8,6 +8,7 @@ import org.apache.http.client.HttpClient
 import org.apache.http.client.config.CookieSpecs
 import org.apache.http.client.config.RequestConfig
 import org.apache.http.client.methods.HttpPost
+import org.apache.http.entity.ContentType
 import org.apache.http.entity.mime.MultipartEntityBuilder
 import org.apache.http.impl.client.HttpClientBuilder
 import org.gradle.api.DefaultTask
