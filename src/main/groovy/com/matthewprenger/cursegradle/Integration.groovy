@@ -55,21 +55,25 @@ class Integration {
     }
 
     static void checkForgeGradle(Project project, CurseProject curseProject) {
-        try {
-            if (project.hasProperty('minecraft')) {
-                log.info "ForgeGradle plugin detected, adding integration..."
-                Task reobfTask = project.tasks.findByName('reobfJar')
-                if (reobfTask == null) reobfTask = project.tasks.findByName('reobf')
-                if (reobfTask == null) {
-                    log.error("Couldn't find reobf or reobfJar task.")
-                } else {
-                    curseProject.uploadTask.dependsOn reobfTask
-                }
+        if (project.hasProperty('minecraft')) {
+            log.info "ForgeGradle plugin detected, adding integration..."
 
-                curseProject.addGameVersion(project.minecraft.version)
+            // FG 3+ doesn't set MC_VERSION until afterEvaluate
+            project.gradle.taskGraph.whenReady {
+                try {
+                    if (project.minecraft.hasProperty('version')) {
+                        log.info 'Found Minecraft version in FG < 3'
+                        curseProject.addGameVersion(project.minecraft.version)
+                    } else if (project.getExtensions().getExtraProperties().has('MC_VERSION')) {
+                        log.info 'Found Minecraft version in FG >= 3'
+                        curseProject.addGameVersion(project.getExtensions().getExtraProperties().get('MC_VERSION'))
+                    } else {
+                        log.warn 'Unable to extract Minecraft version from ForgeGradle'
+                    }
+                } catch (Throwable t) {
+                    log.warn('Failed ForgeGradle integration', t)
+                }
             }
-        } catch (Throwable t) {
-            log.warn('Failed ForgeGradle integration', t)
         }
     }
 }

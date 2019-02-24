@@ -9,7 +9,7 @@ ext {
     url = 'https://github.com/matthewprenger/CurseGradle'
 }
 
-version = '1.1.2'
+version = '1.2.0'
 group = 'com.matthewprenger'
 description = 'Gradle plugin to upload artifacts to CurseForge'
 archivesBaseName = 'CurseGradle'
@@ -63,7 +63,7 @@ assemble.dependsOn javadocJar, sourcesJar
 
 pluginBundle {
     website = project.url
-    vcsUrl = 'git://github.com/matthewprenger/CurseGradle.git'
+    vcsUrl = 'https://github.com/matthewprenger/CurseGradle'
     plugins {
         curseGradlePlugin {
             id = 'com.matthewprenger.cursegradle'
