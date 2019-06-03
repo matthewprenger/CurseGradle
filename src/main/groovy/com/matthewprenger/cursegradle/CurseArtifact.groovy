@@ -58,6 +58,12 @@ class CurseArtifact implements Serializable {
     @SerializedName("parentFileID")
     Integer parentFileID
 
+    /**
+     * The curseforge file ID of the artifact.
+     */
+    @SerializedName("fileID")
+    Integer fileID
+
     @SerializedName("relations")
     CurseRelation curseRelations
 
