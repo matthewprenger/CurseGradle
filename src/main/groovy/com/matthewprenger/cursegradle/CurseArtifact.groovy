@@ -20,6 +20,11 @@ class CurseArtifact implements Serializable {
     transient Collection<Object> gameVersionStrings
 
     /**
+     * The curseforge file ID of the artifact.
+     */
+    transient Integer fileID
+
+    /**
      * The type of changelog. At the time of writing this is: html and text
      */
     @SerializedName("changelogType")

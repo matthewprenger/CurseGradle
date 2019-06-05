@@ -45,12 +45,13 @@ class CurseUploadTask extends DefaultTask {
 
         final String json = Util.gson.toJson(mainArtifact)
         int mainID = uploadFile(json, (File) mainArtifact.artifact)
+        mainArtifact.fileID = mainID
 
         additionalArtifacts.each { artifact ->
             artifact.resolve(project)
             artifact.parentFileID = mainID
             final String childJson = Util.gson.toJson(artifact)
-            uploadFile(childJson, (File) artifact.artifact)
+            artifact.fileID = uploadFile(childJson, (File) artifact.artifact)
         }
     }
 
