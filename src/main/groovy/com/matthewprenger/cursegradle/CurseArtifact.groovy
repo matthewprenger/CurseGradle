@@ -20,6 +20,11 @@ class CurseArtifact implements Serializable {
     transient Collection<Object> gameVersionStrings
 
     /**
+     * The curseforge file ID of the artifact.
+     */
+    transient Integer fileID
+
+    /**
      * The type of changelog. At the time of writing this is: html and text
      */
     @SerializedName("changelogType")
@@ -60,11 +65,6 @@ class CurseArtifact implements Serializable {
 
     @SerializedName("relations")
     CurseRelation curseRelations
-
-    /**
-     * The curseforge file ID of the artifact.
-     */
-    Integer fileID
 
     void relations(@DelegatesTo(CurseRelation)Closure<?> configClosure) {
         CurseRelation relation = new CurseRelation()
