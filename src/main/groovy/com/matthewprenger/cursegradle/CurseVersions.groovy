@@ -33,7 +33,7 @@ class CurseVersions {
             //noinspection GroovyAssignabilityCheck
             VersionType[] types = Util.gson.fromJson(versionTypesJson, VersionType[].class)
             types.each { type ->
-                if (type.slug.startsWith('minecraft') || type.slug == 'java') {
+                if (type.slug.startsWith('minecraft') || type.slug == 'java' || type.slug == 'modloader') {
                     validVersionTypes.add(type.id)
                 }
             }

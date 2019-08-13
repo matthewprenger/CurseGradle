@@ -9,7 +9,7 @@ ext {
     url = 'https://github.com/matthewprenger/CurseGradle'
 }
 
-version = '1.3.0'
+version = '1.4.0'
 group = 'com.matthewprenger'
 description = 'Gradle plugin to upload artifacts to CurseForge'
 archivesBaseName = 'CurseGradle'

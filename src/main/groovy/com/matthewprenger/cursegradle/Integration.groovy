@@ -64,9 +64,11 @@ class Integration {
                     if (project.minecraft.hasProperty('version')) {
                         log.info 'Found Minecraft version in FG < 3'
                         curseProject.addGameVersion(project.minecraft.version)
+                        curseProject.addGameVersion('Forge')
                     } else if (project.getExtensions().getExtraProperties().has('MC_VERSION')) {
                         log.info 'Found Minecraft version in FG >= 3'
                         curseProject.addGameVersion(project.getExtensions().getExtraProperties().get('MC_VERSION'))
+                        curseProject.addGameVersion('Forge')
                     } else {
                         log.warn 'Unable to extract Minecraft version from ForgeGradle'
                     }
