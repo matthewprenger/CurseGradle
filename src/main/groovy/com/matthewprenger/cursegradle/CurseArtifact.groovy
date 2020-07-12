@@ -1,8 +1,9 @@
 package com.matthewprenger.cursegradle
 
 import com.google.gson.annotations.SerializedName
-import org.gradle.api.Nullable
 import org.gradle.api.Project
+
+import javax.annotation.Nullable
 
 import static com.matthewprenger.cursegradle.Util.check
 

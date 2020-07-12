@@ -1,0 +1,69 @@
+buildscript {
+    repositories {
+        maven { url = 'https://files.minecraftforge.net/maven' }
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath fileTree(dir: projectDir, include: ['CurseGradle-*-all.jar'])
+    }
+}
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'com.matthewprenger.cursegradle'
+
+version = '1.0'
+group = 'com.matthewprenger.cursegradletestmod'
+archivesBaseName = 'cursegradletestmod'
+
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+
+minecraft {
+    mappings channel: 'snapshot', version: '20200514-1.16'
+}
+
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.16.1-32.0.63'
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+   from javadoc.destinationDir
+   classifier = 'javadoc'
+}
+
+task sourcesJar(type: Jar) {
+   from sourceSets.main.allSource
+   classifier = 'sources'
+}
+
+artifacts {
+   archives jar
+   archives javadocJar
+   archives sourcesJar
+}
+
+assemble.dependsOn javadocJar, sourcesJar
+
+curseforge {
+    apiKey = System.getenv('CURSEFORGE_API_KEY') ?: 'unset'
+    options {
+        debug = true
+    }
+    project {
+        id = '70690'
+        changelog = 'Changes'
+        releaseType = 'alpha'
+
+        mainArtifact(jar) {
+            displayName = "My Test Mod version $version"
+        }
+
+        addArtifact(javadocJar) {
+            displayName = "My Test Mod Javadoc version $version"
+        }
+
+        addArtifact(sourcesJar) {
+            displayName = "My Test Mod Sources version $version"
+        }
+    }
+}

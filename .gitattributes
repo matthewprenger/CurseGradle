@@ -1,4 +1,4 @@
-* text=auto
+* text=auto eol=lf
 *.java text eol=lf
 *.groovy text eol=lf
 *.scala text eol=lf

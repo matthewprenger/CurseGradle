@@ -1,6 +1,6 @@
 package com.matthewprenger.cursegradle
 
-import org.gradle.api.Nullable
+import javax.annotation.Nullable
 
 import static com.matthewprenger.cursegradle.Util.check
 
