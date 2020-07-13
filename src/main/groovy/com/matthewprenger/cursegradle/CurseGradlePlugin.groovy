@@ -68,13 +68,9 @@ class CurseGradlePlugin implements Plugin<Project> {
 
                 uploadTask.mainArtifact = curseProject.mainArtifact
 
-                // At this stage, all artifacts should be in a state ready to upload
-                // ForgeGradle's reobf tasks are dependants of this
-                uploadTask.dependsOn project.tasks.getByName('assemble')
-
-                // Run after build if it's on the task graph. This is useful because if tests fail,
+                // Run after build. This is useful because if tests fail,
                 // the artifacts won't be uploaded
-                uploadTask.mustRunAfter project.tasks.getByName('build')
+                uploadTask.dependsOn project.tasks.getByName('build')
 
                 mainTask.dependsOn uploadTask
                 uploadTask.onlyIf { mainTask.enabled }
