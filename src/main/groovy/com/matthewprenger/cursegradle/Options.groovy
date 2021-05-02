@@ -29,6 +29,11 @@ class Options {
     boolean javaIntegration = true
 
     /**
+     * Enable integration with the Bukkit plugin. This includes setting the default apiBaseUrl.
+     */
+    boolean bukkitIntegration = false
+
+    /**
      * Enable integration with the ForgeGradle plugin. This includes setting dependencies on the reobfuscation tasks.
      */
     boolean forgeGradleIntegration = true

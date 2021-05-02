@@ -65,17 +65,20 @@ class CurseGradlePlugin implements Plugin<Project> {
 
                 CurseExtension ext = project.extensions.getByType(CurseExtension)
 
-                if (ext.curseGradleOptions.javaVersionAutoDetect) {
+                if (ext.curseGradleOptions.javaVersionAutoDetect && !ext.curseGradleOptions.bukkitIntegration) {
                     Integration.checkJavaVersion(project, curseProject)
                 }
 
-                if (ext.curseGradleOptions.javaIntegration) {
+                if (ext.curseGradleOptions.javaIntegration && !ext.curseGradleOptions.bukkitIntegration) {
                     Integration.checkJava(project, curseProject)
                 }
-                if (ext.curseGradleOptions.forgeGradleIntegration) {
+                if (ext.curseGradleOptions.forgeGradleIntegration && !ext.curseGradleOptions.bukkitIntegration) {
                     Integration.checkForgeGradle(project, curseProject)
                 }
 
+                if (ext.curseGradleOptions.bukkitIntegration) {
+                    API_BASE_URL = 'https://dev.bukkit.org'
+                }
                 API_BASE_URL = ext.curseGradleOptions.apiBaseUrl;
 
                 curseProject.copyConfig()

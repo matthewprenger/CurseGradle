@@ -143,9 +143,7 @@ curseforge {
     apiKey = System.getenv('CURSEFORGE_API_KEY') ?: 'unset'
     options {
         debug = true
-        javaVersionAutoDetect = false
-        forgeGradleIntegration = false
-        apiBaseUrl = 'https://dev.bukkit.org'
+        bukkitIntegration = true
     }
     project {
         id = '70690'
