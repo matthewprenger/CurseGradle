@@ -54,8 +54,8 @@ curseforge {
         changelog = 'Changes'
         releaseType = 'alpha'
 
-        addGameVersion "Forge"
-        addGameVersion "1.16.5"
+        addGameVersion 'Forge'
+        addGameVersion '1.16.5'
 
         mainArtifact(jar) {
             displayName = "My Test Mod version $version"

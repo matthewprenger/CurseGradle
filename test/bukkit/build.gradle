@@ -12,12 +12,12 @@ buildscript {
 }
 
 plugins {
-	id "com.github.johnrengelman.shadow" version "1.2.3"
-	id "de.undercouch.download" version "3.1.1"
+    id 'com.github.johnrengelman.shadow' version '1.2.4'
+    id 'de.undercouch.download' version '3.1.2'
 }
 
-apply plugin: "java-library"
-//apply plugin: "eclipse"
+apply plugin: 'java'
+apply plugin: 'eclipse'
 apply plugin: 'com.matthewprenger.cursegradle'
 
 repositories {
@@ -39,52 +39,52 @@ configurations {
 }
 
 dependencies {
-	compile group: "org.spigotmc", name: "spigot-api", version: "1.16.5-R0.1-SNAPSHOT"
-	compile group: "org.spigotmc", name: "spigot", version: "1.16.5-R0.1-SNAPSHOT"
+    compile group: 'org.spigotmc', name: 'spigot-api', version: '1.16.5-R0.1-SNAPSHOT'
+    compile group: 'org.spigotmc', name: 'spigot', version: '1.16.5-R0.1-SNAPSHOT'
 }
 
 compileJava.dependsOn {
 	buildSpigot
 }
 
-task setupDevServer(dependsOn: "extractServerJar", type: Copy) {
-	from "config/serverfiles"
-	into "run"
+task setupDevServer(dependsOn: 'extractServerJar', type: Copy) {
+	from 'config/serverfiles'
+	into 'run'
 }
 
 task extractServerJar(type: Copy) {
 	from {
 		configurations.runtime
 	}
-	include("spigot-" + "1.16.5-R0.1-SNAPSHOT" + ".jar")
-	rename("spigot-" + "1.16.5-R0.1-SNAPSHOT" + ".jar", "server.jar")
-	into "run"
+	include('spigot-' + '1.16.5-R0.1-SNAPSHOT' + '.jar')
+	rename('spigot-' + '1.16.5-R0.1-SNAPSHOT' + '.jar', 'server.jar')
+	into 'run'
 }
 
-task copyPluginToTestserver(dependsOn: ["build"], type: Copy) {
+task copyPluginToTestserver(dependsOn: ['build'], type: Copy) {
 	from "${buildDir}/libs"
-	into "run/plugins"
+	into 'run/plugins'
 }
 
 task extractDependencyPlugins(type: Copy) {
 	from {
 		configurations.plugin
 	}
-	into "run/plugins"
+    into 'run/plugins'
 }
 
-task prepareDevServer(dependsOn: ["buildSpigot", "setupDevServer", "copyPluginToTestserver", "extractDependencyPlugins"]) {}
+task prepareDevServer(dependsOn: ['buildSpigot', 'setupDevServer', 'copyPluginToTestserver', 'extractDependencyPlugins']) {}
 
 task startDevServer(dependsOn: [prepareDevServer], type: JavaExec) {
 	classpath configurations.compile, configurations.runtime
-	main = "org.bukkit.craftbukkit.Main"
-	workingDir = "run"
+    main = 'org.bukkit.craftbukkit.Main'
+    workingDir = 'run'
 	standardInput = System.in
 }
 
 def spigotBuildDir = new File("$buildDir/spigot/")
 
-task setupWorkspace(dependsOn: ["buildSpigot"]) {
+task setupWorkspace(dependsOn: ['buildSpigot']) {
 }
 
 task buildSpigot(type: JavaExec) {
@@ -92,17 +92,17 @@ task buildSpigot(type: JavaExec) {
 		enabled = false;
 		dependsOn = [];
 	} else {
-		dependsOn = ["cleanSpigotBuild", "downloadBuildTool"]
+		dependsOn = ['cleanSpigotBuild', 'downloadBuildTool']
 	}
-	main = "-jar"
-	args new File(spigotBuildDir, "BuildTools.jar").getAbsolutePath(), "--rev", "1.16.5"
+	main = '-jar'
+	args new File(spigotBuildDir, 'BuildTools.jar').getAbsolutePath(), '--rev', '1.16.5'
 	workingDir = spigotBuildDir
 }
 
 task downloadBuildTool(type: Download) {
 	spigotBuildDir.mkdirs()
-	src "https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar"
-	dest new File(spigotBuildDir, "BuildTools.jar")
+	src 'https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar'
+	dest new File(spigotBuildDir, 'BuildTools.jar')
 }
 
 task cleanSpigotBuild() {
@@ -110,14 +110,14 @@ task cleanSpigotBuild() {
 }
 
 def hasSpigot() {
-	def groupId = "org.spigotmc"
-	def version = "1.16.5-R0.1-SNAPSHOT"
-	return hasArtifact(groupId, "spigot-api", version) && hasArtifact(groupId, "spigot", version)
+    def groupId = 'org.spigotmc'
+    def version = '1.16.5-R0.1-SNAPSHOT'
+    return hasArtifact(groupId, 'spigot-api', version) && hasArtifact(groupId, 'spigot', version)
 }
 
 def hasArtifact(groupId, artifactId, version) {
-	def localMavenRepo = new File(new File(ant.properties["user.home"] as String), ".m2/repository/")
-	def file = new File(localMavenRepo, groupId.replace(".", "/") + "/" + artifactId + "/" + version + "/")
+	def localMavenRepo = new File(new File(ant.properties['user.home'] as String), '.m2/repository/')
+	def file = new File(localMavenRepo, groupId.replace('.', '/') + '/' + artifactId + '/' + version + '/')
 	return file.exists()
 }
 
@@ -155,15 +155,15 @@ curseforge {
         addGameVersion '1.16'
 
         mainArtifact(jar) {
-            displayName = "My Test Mod version $version"
+            displayName = "My Test Plugin version $version"
         }
 
         addArtifact(javadocJar) {
-            displayName = "My Test Mod Javadoc version $version"
+            displayName = "My Test Plugin Javadoc version $version"
         }
 
         addArtifact(sourcesJar) {
-            displayName = "My Test Mod Sources version $version"
+            displayName = "My Test Plugin Sources version $version"
         }
     }
 }
