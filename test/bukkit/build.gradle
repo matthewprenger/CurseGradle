@@ -1,0 +1,173 @@
+import de.undercouch.gradle.tasks.download.Download
+import org.apache.tools.ant.filters.ReplaceTokens
+
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath fileTree(dir: projectDir, include: ['CurseGradle-*-all.jar'])
+    }
+}
+
+plugins {
+	id "com.github.johnrengelman.shadow" version "1.2.3"
+	id "de.undercouch.download" version "3.1.1"
+}
+
+apply plugin: "java"
+apply plugin: "eclipse"
+apply plugin: 'com.matthewprenger.cursegradle'
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+}
+
+version = '1.0'
+group = 'com.matthewprenger.cursegradletestplugin'
+archivesBaseName = 'cursegradletestmod'
+
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+
+minecraft {
+    mappings channel: 'snapshot', version: '20200514-1.16'
+}
+
+configurations {
+	plugin {
+		transitive = false
+	}
+	compileOnly.extendsFrom(plugin)
+}
+
+dependencies {
+	compile group: "org.spigotmc", name: "spigot-api", version: "1.16.3-R0.1-SNAPSHOT"
+	compile group: "org.spigotmc", name: "spigot", version: "1.16.3-R0.1-SNAPSHOT"
+}
+
+compileJava.dependsOn {
+	buildSpigot
+}
+
+task setupDevServer(dependsOn: "extractServerJar", type: Copy) {
+	from "config/serverfiles"
+	into "run"
+}
+
+task extractServerJar(type: Copy) {
+	from {
+		configurations.runtime
+	}
+	include("spigot-" + "1.16.3-R0.1-SNAPSHOT" + ".jar")
+	rename("spigot-" + "1.16.3-R0.1-SNAPSHOT" + ".jar", "server.jar")
+	into "run"
+}
+
+task copyPluginToTestserver(dependsOn: ["build"], type: Copy) {
+	from "${buildDir}/libs"
+	into "run/plugins"
+}
+
+task extractDependencyPlugins(type: Copy) {
+	from {
+		configurations.plugin
+	}
+	into "run/plugins"
+}
+
+task prepareDevServer(dependsOn: ["buildSpigot", "setupDevServer", "copyPluginToTestserver", "extractDependencyPlugins"]) {}
+
+task startDevServer(dependsOn: [prepareDevServer], type: JavaExec) {
+	classpath configurations.compile, configurations.runtime
+	main = "org.bukkit.craftbukkit.Main"
+	workingDir = "run"
+	standardInput = System.in
+}
+
+def spigotBuildDir = new File("$buildDir/spigot/")
+
+task setupWorkspace(dependsOn: ["buildSpigot"]) {
+}
+
+task buildSpigot(type: JavaExec) {
+	if (hasSpigot()) {
+		enabled = false;
+		dependsOn = [];
+	} else {
+		dependsOn = ["cleanSpigotBuild", "downloadBuildTool"]
+	}
+	main = "-jar"
+	args new File(spigotBuildDir, "BuildTools.jar").getAbsolutePath(), "--rev", "1.16.3"
+	workingDir = spigotBuildDir
+}
+
+task downloadBuildTool(type: Download) {
+	spigotBuildDir.mkdirs()
+	src "https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar"
+	dest new File(spigotBuildDir, "BuildTools.jar")
+}
+
+task cleanSpigotBuild() {
+	spigotBuildDir.deleteDir()
+}
+
+def hasSpigot() {
+	def groupId = "org.spigotmc"
+	def version = "1.16.3-R0.1-SNAPSHOT"
+	return hasArtifact(groupId, "spigot-api", version) && hasArtifact(groupId, "spigot", version)
+}
+
+def hasArtifact(groupId, artifactId, version) {
+	def localMavenRepo = new File(new File(ant.properties["user.home"] as String), ".m2/repository/")
+	def file = new File(localMavenRepo, groupId.replace(".", "/") + "/" + artifactId + "/" + version + "/")
+	return file.exists()
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+   from javadoc.destinationDir
+   classifier = 'javadoc'
+}
+
+task sourcesJar(type: Jar) {
+   from sourceSets.main.allSource
+   classifier = 'sources'
+}
+
+artifacts {
+   archives jar
+   archives javadocJar
+   archives sourcesJar
+}
+
+assemble.dependsOn javadocJar, sourcesJar
+
+curseforge {
+    apiKey = System.getenv('CURSEFORGE_API_KEY') ?: 'unset'
+    options {
+        debug = true
+        javaVersionAutoDetect = false
+        forgeGradleIntegration = false
+        apiBaseUrl = 'https://dev.bukkit.org'
+    }
+    project {
+        id = '70690'
+        changelog = 'Changes'
+        releaseType = 'alpha'
+
+        addGameVersion '1.16'
+
+        mainArtifact(jar) {
+            displayName = "My Test Mod version $version"
+        }
+
+        addArtifact(javadocJar) {
+            displayName = "My Test Mod Javadoc version $version"
+        }
+
+        addArtifact(sourcesJar) {
+            displayName = "My Test Mod Sources version $version"
+        }
+    }
+}

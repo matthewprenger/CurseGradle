@@ -1,11 +1,11 @@
 buildscript {
     repositories {
-        maven { url = 'https://files.minecraftforge.net/maven' }
+        maven { url = 'https://maven.minecraftforge.net/' }
         jcenter()
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.+', changing: true
         classpath fileTree(dir: projectDir, include: ['CurseGradle-*-all.jar'])
     }
 }
@@ -23,7 +23,7 @@ minecraft {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.1-32.0.63'
+    minecraft 'net.minecraftforge:forge:1.16.5-36.0.8'
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
@@ -53,6 +53,9 @@ curseforge {
         id = '70690'
         changelog = 'Changes'
         releaseType = 'alpha'
+
+        addGameVersion "Forge"
+        addGameVersion "1.16.5"
 
         mainArtifact(jar) {
             displayName = "My Test Mod version $version"

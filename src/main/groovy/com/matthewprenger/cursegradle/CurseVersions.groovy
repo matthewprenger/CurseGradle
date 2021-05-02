@@ -29,7 +29,7 @@ class CurseVersions {
         try {
             TIntSet validVersionTypes = new TIntHashSet()
 
-            String versionTypesJson = Util.httpGet(apiKey, CurseGradlePlugin.VERSION_TYPES_URL)
+            String versionTypesJson = Util.httpGet(apiKey, CurseGradlePlugin.getVersionTypesUrl())
             //noinspection GroovyAssignabilityCheck
             VersionType[] types = Util.gson.fromJson(versionTypesJson, VersionType[].class)
             types.each { type ->
@@ -38,7 +38,7 @@ class CurseVersions {
                 }
             }
 
-            String gameVersionsJson = Util.httpGet(apiKey, CurseGradlePlugin.VERSION_URL)
+            String gameVersionsJson = Util.httpGet(apiKey, CurseGradlePlugin.getVersionUrl())
             //noinspection GroovyAssignabilityCheck
             GameVersion[] versions = Util.gson.fromJson(gameVersionsJson, GameVersion[].class)
             versions.each { version ->

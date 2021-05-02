@@ -32,4 +32,9 @@ class Options {
      * Enable integration with the ForgeGradle plugin. This includes setting dependencies on the reobfuscation tasks.
      */
     boolean forgeGradleIntegration = true
+
+    /**
+     * The api base url of the curse forge project
+     */
+    String apiBaseUrl = 'https://minecraft.curseforge.com'
 }
