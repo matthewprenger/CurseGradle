@@ -39,6 +39,11 @@ class Options {
     boolean forgeGradleIntegration = true
 
     /**
+     * Enable integration with generic endpoints. This requires setting the default apiBaseUrl.
+     */
+    boolean genericIntegration = false
+
+    /**
      * The api base url of the curse forge project
      */
     String apiBaseUrl = 'https://minecraft.curseforge.com'
