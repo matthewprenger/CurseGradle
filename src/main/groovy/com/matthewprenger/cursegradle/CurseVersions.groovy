@@ -12,6 +12,8 @@ import org.gradle.api.logging.Logging
 
 class CurseVersions {
 
+    Options curseGradleOptions = new Options()
+
     private static final Logger log = Logging.getLogger(CurseVersions)
 
     private static final TObjectIntMap<String> gameVersions = new TObjectIntHashMap<>()
@@ -33,7 +35,7 @@ class CurseVersions {
             //noinspection GroovyAssignabilityCheck
             VersionType[] types = Util.gson.fromJson(versionTypesJson, VersionType[].class)
             types.each { type ->
-                if ((type.slug.startsWith('minecraft') || type.slug == 'java' || type.slug == 'modloader' || type.slug == 'addons') || (ext.curseGradleOptions.bukkitIntegration && type.slug == 'bukkit') || (ext.curseGradleOptions.genericIntegration && type.slug == 'game')) {
+                if ((type.slug.startsWith('minecraft') || type.slug == 'java' || type.slug == 'modloader' || type.slug == 'addons') || (curseGradleOptions.bukkitIntegration && type.slug == 'bukkit') || (curseGradleOptions.genericIntegration && type.slug == 'game')) {
                     validVersionTypes.add(type.id)
                 }
             }
