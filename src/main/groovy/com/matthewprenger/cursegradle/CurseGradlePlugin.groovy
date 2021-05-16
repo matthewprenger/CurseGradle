@@ -76,10 +76,10 @@ class CurseGradlePlugin implements Plugin<Project> {
                     Integration.checkForgeGradle(project, curseProject)
                 }
 
-                if (ext.curseGradleOptions.bukkitIntegration) {
+                API_BASE_URL = ext.curseGradleOptions.apiBaseUrl;
+                if (ext.curseGradleOptions.bukkitIntegration && (!ext.curseGradleOptions.forgeGradleIntegration || !ext.curseGradleOptions.genericIntegration)) {
                     API_BASE_URL = 'https://dev.bukkit.org'
                 }
-                API_BASE_URL = ext.curseGradleOptions.apiBaseUrl;
 
                 curseProject.copyConfig()
 
