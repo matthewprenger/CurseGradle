@@ -12,6 +12,8 @@ import org.gradle.api.logging.Logging
 
 class CurseVersions {
 
+    Options curseGradleOptions = new Options()
+
     private static final Logger log = Logging.getLogger(CurseVersions)
 
     private static final TObjectIntMap<String> gameVersions = new TObjectIntHashMap<>()
@@ -29,16 +31,16 @@ class CurseVersions {
         try {
             TIntSet validVersionTypes = new TIntHashSet()
 
-            String versionTypesJson = Util.httpGet(apiKey, CurseGradlePlugin.VERSION_TYPES_URL)
+            String versionTypesJson = Util.httpGet(apiKey, CurseGradlePlugin.getVersionTypesUrl())
             //noinspection GroovyAssignabilityCheck
             VersionType[] types = Util.gson.fromJson(versionTypesJson, VersionType[].class)
             types.each { type ->
-                if (type.slug.startsWith('minecraft') || type.slug == 'java' || type.slug == 'modloader') {
+                if ((type.slug.startsWith('minecraft') || type.slug == 'java' || type.slug == 'modloader' || type.slug == 'addons') || (curseGradleOptions.bukkitIntegration && type.slug == 'bukkit') || (curseGradleOptions.genericIntegration && type.slug == 'game')) {
                     validVersionTypes.add(type.id)
                 }
             }
 
-            String gameVersionsJson = Util.httpGet(apiKey, CurseGradlePlugin.VERSION_URL)
+            String gameVersionsJson = Util.httpGet(apiKey, CurseGradlePlugin.getVersionUrl())
             //noinspection GroovyAssignabilityCheck
             GameVersion[] versions = Util.gson.fromJson(gameVersionsJson, GameVersion[].class)
             versions.each { version ->

@@ -29,7 +29,22 @@ class Options {
     boolean javaIntegration = true
 
     /**
+     * Enable integration with the Bukkit plugin. This includes setting the default apiBaseUrl.
+     */
+    boolean bukkitIntegration = false
+
+    /**
      * Enable integration with the ForgeGradle plugin. This includes setting dependencies on the reobfuscation tasks.
      */
     boolean forgeGradleIntegration = true
+
+    /**
+     * Enable integration with generic endpoints. This requires setting the default apiBaseUrl.
+     */
+    boolean genericIntegration = false
+
+    /**
+     * The api base url of the curse forge project
+     */
+    String apiBaseUrl = 'https://minecraft.curseforge.com'
 }

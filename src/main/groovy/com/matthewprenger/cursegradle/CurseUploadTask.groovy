@@ -58,7 +58,7 @@ class CurseUploadTask extends DefaultTask {
     int uploadFile(String json, File file) throws IOException, URISyntaxException {
 
         int fileID
-        final String uploadUrl = String.format(CurseGradlePlugin.UPLOAD_URL, projectId)
+        final String uploadUrl = String.format(CurseGradlePlugin.getUploadUrl(), projectId)
         log.info("Uploading file: {} to url: {} with json: {}", file, uploadUrl, json)
 
         HttpClient client = HttpClientBuilder.create()
